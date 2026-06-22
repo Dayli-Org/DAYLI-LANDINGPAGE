@@ -1,0 +1,52 @@
+---
+import type { Locale } from '../i18n/ui';
+import { getMessages } from '../i18n/ui';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = getMessages(locale);
+
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: t.faq.items.map((item) => ({
+    '@type': 'Question',
+    name: item.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: item.answer,
+    },
+  })),
+};
+---
+
+<section id="faq" class="border-y border-primary/10 bg-white py-16 md:py-20">
+  <div class="section-container">
+    <h2 class="section-title">{t.faq.title}</h2>
+    <div class="mt-10 space-y-4">
+      {
+        t.faq.items.map((item) => (
+          <details class="group cursor-pointer rounded-xl border border-primary/10 bg-surface p-5 open:bg-white open:shadow-card">
+            <summary class="flex list-none items-center justify-between gap-4 text-lg font-semibold text-ink marker:content-none">
+              {item.question}
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5 shrink-0 text-primary transition-transform duration-200 group-open:rotate-180" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+              </svg>
+            </summary>
+            <p class="mt-4 text-ink/80">{item.answer}</p>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+</section>
+
+<style>
+  summary::-webkit-details-marker {
+    display: none;
+  }
+</style>

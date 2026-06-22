@@ -1,0 +1,268 @@
+---
+import type { Locale } from '../i18n/ui';
+import { getMessages } from '../i18n/ui';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = getMessages(locale);
+---
+
+<style>
+  /* Price counts down with a satisfying drop */
+  @keyframes price-drop {
+    0%   { transform: translateY(-8px) scale(0.96); opacity: 0.4; }
+    65%  { transform: translateY(2px)  scale(1.01); opacity: 1; }
+    100% { transform: translateY(0)    scale(1);    opacity: 1; }
+  }
+
+  /* Savings chip slides up and fades in */
+  @keyframes chip-appear {
+    0%   { transform: translateY(6px) scale(0.9); opacity: 0; }
+    70%  { transform: translateY(-1px) scale(1.03); }
+    100% { transform: translateY(0)   scale(1);    opacity: 1; }
+  }
+
+  /* Save badge pops when annual is selected */
+  @keyframes badge-pop {
+    0%   { transform: scale(1); }
+    35%  { transform: scale(1.3); }
+    65%  { transform: scale(0.9); }
+    100% { transform: scale(1); }
+  }
+
+  .price-drop-anim {
+    display: inline-block;
+    animation: price-drop 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .price-saving {
+    color: var(--color-primary, #6366f1);
+    transition: color 0.6s ease;
+  }
+
+  .price-restoring {
+    transition: color 0.35s ease;
+  }
+
+  .savings-chip {
+    display: none;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--color-primary, #6366f1);
+    margin-top: 0.2rem;
+  }
+
+  .savings-chip.visible {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.2rem;
+    animation: chip-appear 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .badge-pop {
+    display: inline-block;
+    animation: badge-pop 0.38s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+</style>
+
+<section
+  id="pricing"
+  class="section-container py-16 md:py-24"
+  data-save-template={t.pricing.billing.savePerYear}
+>
+  <div class="text-center">
+    <p class="text-sm font-semibold uppercase tracking-wider text-primary">{t.pricing.eyebrow}</p>
+    <h2 class="section-title mt-3">{t.pricing.title}</h2>
+    <p class="section-subtitle mx-auto">{t.pricing.subtitle}</p>
+  </div>
+
+  <!-- Billing toggle -->
+  <div class="mt-8 flex items-center justify-center gap-1 rounded-full border border-border bg-muted p-1 w-fit mx-auto">
+    <button
+      id="billing-monthly"
+      class="rounded-full px-5 py-2 text-sm font-medium transition-all duration-200 bg-card text-ink shadow-sm"
+      aria-pressed="true"
+    >
+      {t.pricing.billing.monthly}
+    </button>
+    <button
+      id="billing-annual"
+      class="rounded-full px-5 py-2 text-sm font-medium transition-all duration-200 text-muted-foreground hover:text-ink flex items-center gap-2"
+      aria-pressed="false"
+    >
+      {t.pricing.billing.annual}
+      <span id="save-badge" class="rounded-full bg-brand px-2 py-0.5 text-xs font-bold text-primary-foreground">{t.pricing.billing.save}</span>
+    </button>
+  </div>
+
+  <div class="mt-10 grid gap-6 lg:grid-cols-3 lg:items-stretch">
+    {
+      t.pricing.tiers.map((tier) => (
+        <article
+          class:list={[
+            'relative flex flex-col rounded-2xl border p-6 transition-all duration-200',
+            tier.highlighted
+              ? 'border-primary/50 bg-card shadow-glow ring-1 ring-primary/20'
+              : 'border-border bg-card/80 shadow-card hover:shadow-glow',
+          ]}
+        >
+          {tier.badge && (
+            <span class="absolute -top-3 start-1/2 -translate-x-1/2 rounded-full bg-brand px-4 py-1 text-xs font-bold text-primary-foreground shadow-brand">
+              {tier.badge}
+            </span>
+          )}
+
+          <p class="text-sm font-medium text-muted-foreground">{tier.description}</p>
+          <h3 class="mt-1 text-2xl font-bold text-ink">{tier.name}</h3>
+
+          <div class="mt-5">
+            <p class="flex items-baseline gap-1">
+              <span
+                class="text-4xl font-extrabold tracking-tight text-ink"
+                data-monthly={tier.price}
+                data-annual={tier.annualPrice}
+              >{tier.price}</span>
+              <span class="text-sm text-muted-foreground">/ {tier.period}</span>
+            </p>
+            <span class="savings-chip" aria-live="polite"></span>
+          </div>
+
+          <ul class="mt-6 flex-1 space-y-3 border-t border-border pt-6">
+            {tier.features.map((feature) => (
+              <li class="flex gap-2.5 text-sm text-foreground/85">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true">
+                  <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd" />
+                </svg>
+                {feature}
+              </li>
+            ))}
+          </ul>
+
+          <a
+            href="https://dayli.co.il/login"
+            class:list={[
+              'mt-8 w-full text-center',
+              tier.highlighted || tier.id === 'premium' ? 'btn-primary' : 'btn-secondary',
+            ]}
+          >
+            {tier.cta}
+          </a>
+        </article>
+      ))
+    }
+  </div>
+</section>
+
+<script>
+  const monthlyBtn   = document.getElementById('billing-monthly') as HTMLButtonElement | null;
+  const annualBtn    = document.getElementById('billing-annual')  as HTMLButtonElement | null;
+  const saveBadge    = document.getElementById('save-badge')      as HTMLElement | null;
+  const priceEls     = Array.from(document.querySelectorAll<HTMLElement>('[data-monthly][data-annual]'));
+  const savingsChips = Array.from(document.querySelectorAll<HTMLElement>('.savings-chip'));
+  const section      = document.getElementById('pricing');
+  const saveTemplate = section?.dataset.saveTemplate ?? '';
+
+  /** Ease-out-expo — fast start, gentle landing */
+  function easeOutExpo(t: number): number {
+    return t >= 1 ? 1 : 1 - Math.pow(2, -10 * t);
+  }
+
+  function animateCounter(el: HTMLElement, toStr: string, isAnnual: boolean) {
+    const fromNum = parseInt((el.textContent ?? '').replace(/[^\d]/g, ''), 10);
+    const toNum   = parseInt(toStr.replace(/[^\d]/g, ''), 10);
+    if (isNaN(fromNum) || isNaN(toNum) || fromNum === toNum) {
+      el.textContent = toStr;
+      return;
+    }
+
+    /* Re-trigger drop animation */
+    el.classList.remove('price-drop-anim', 'price-saving', 'price-restoring');
+    void (el as HTMLElement).offsetWidth; // force reflow
+    el.classList.add('price-drop-anim');
+    if (isAnnual) el.classList.add('price-saving');
+    else          el.classList.add('price-restoring');
+
+    const duration  = 580;
+    const startTime = performance.now();
+
+    (function tick(now: number) {
+      const progress = Math.min((now - startTime) / duration, 1);
+      const eased    = easeOutExpo(progress);
+      el.textContent = '₪' + Math.round(fromNum + (toNum - fromNum) * eased);
+
+      if (progress < 1) {
+        requestAnimationFrame(tick);
+      } else {
+        el.textContent = toStr;
+        /* Fade the colour highlight away */
+        setTimeout(() => {
+          el.classList.remove('price-saving', 'price-restoring', 'price-drop-anim');
+        }, isAnnual ? 500 : 0);
+      }
+    })(startTime);
+  }
+
+  function updateSavingsChips(isAnnual: boolean) {
+    priceEls.forEach((el, i) => {
+      const chip = savingsChips[i];
+      if (!chip) return;
+
+      if (isAnnual) {
+        const monthly = parseInt((el.dataset.monthly ?? '').replace(/[^\d]/g, ''), 10);
+        const annual  = parseInt((el.dataset.annual  ?? '').replace(/[^\d]/g, ''), 10);
+        if (!isNaN(monthly) && !isNaN(annual)) {
+          chip.textContent = saveTemplate.replace('{amount}', '₪' + (monthly - annual) * 12);
+          chip.classList.remove('visible');
+          void chip.offsetWidth;
+          chip.classList.add('visible');
+        }
+      } else {
+        chip.classList.remove('visible');
+      }
+    });
+  }
+
+  function triggerBadgePop() {
+    if (!saveBadge) return;
+    saveBadge.classList.remove('badge-pop');
+    void saveBadge.offsetWidth;
+    saveBadge.classList.add('badge-pop');
+  }
+
+  function setMode(mode: 'monthly' | 'annual') {
+    const isAnnual = mode === 'annual';
+
+    monthlyBtn?.setAttribute('aria-pressed', String(!isAnnual));
+    annualBtn?.setAttribute('aria-pressed',  String(isAnnual));
+
+    if (monthlyBtn) {
+      monthlyBtn.classList.toggle('bg-card',              !isAnnual);
+      monthlyBtn.classList.toggle('text-ink',             !isAnnual);
+      monthlyBtn.classList.toggle('shadow-sm',            !isAnnual);
+      monthlyBtn.classList.toggle('text-muted-foreground', isAnnual);
+      monthlyBtn.classList.toggle('hover:text-ink',        isAnnual);
+    }
+
+    if (annualBtn) {
+      annualBtn.classList.toggle('bg-card',               isAnnual);
+      annualBtn.classList.toggle('text-ink',              isAnnual);
+      annualBtn.classList.toggle('shadow-sm',             isAnnual);
+      annualBtn.classList.toggle('text-muted-foreground', !isAnnual);
+      annualBtn.classList.toggle('hover:text-ink',        !isAnnual);
+    }
+
+    if (isAnnual) triggerBadgePop();
+
+    priceEls.forEach((el) => {
+      animateCounter(el, isAnnual ? (el.dataset.annual ?? '') : (el.dataset.monthly ?? ''), isAnnual);
+    });
+
+    updateSavingsChips(isAnnual);
+  }
+
+  monthlyBtn?.addEventListener('click', () => setMode('monthly'));
+  annualBtn?.addEventListener('click',  () => setMode('annual'));
+</script>

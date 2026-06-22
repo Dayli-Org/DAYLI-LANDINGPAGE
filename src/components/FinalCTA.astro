@@ -1,0 +1,285 @@
+---
+import type { Locale } from '../i18n/ui';
+import { getMessages } from '../i18n/ui';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = getMessages(locale);
+---
+
+<section id="contact" class="section-container py-16 md:py-24">
+  <div class="relative overflow-hidden rounded-3xl border border-border bg-card shadow-glow">
+    <div class="pointer-events-none absolute inset-0 bg-hero opacity-40" aria-hidden="true"></div>
+
+    <div class="relative grid md:grid-cols-2">
+
+      <!-- Left panel: CTA copy -->
+      <div class="flex flex-col justify-center px-8 py-14 md:px-12 md:py-20">
+        <h2 class="font-display text-3xl font-extrabold tracking-tight text-ink sm:text-4xl md:text-5xl">
+          {t.cta.title}
+        </h2>
+        <p class="mt-4 max-w-sm text-lg text-muted-foreground">{t.cta.subtitle}</p>
+
+        <div class="mt-8 flex flex-col items-start gap-2">
+          <a href="https://dayli.co.il/login" class="btn-primary">
+            {t.cta.primary}
+          </a>
+          <p class="mt-2 text-sm text-muted-foreground">{t.contactForm.subheading}</p>
+        </div>
+      </div>
+
+      <!-- Right panel: Contact form -->
+      <div class="contact-panel border-s-0 border-t border-border/60 px-8 py-14 md:border-s md:border-t-0 md:px-12 md:py-20">
+        <h3 class="mb-6 text-xl font-bold text-ink">{t.contactForm.heading}</h3>
+
+        <!-- Success state -->
+        <div id="contact-success" class="contact-success hidden" aria-live="polite">
+          <div class="contact-success__icon" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-8 w-8 text-primary">
+              <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd" />
+            </svg>
+          </div>
+          <p class="mt-3 text-lg font-semibold text-ink">{t.contactForm.successTitle}</p>
+          <p class="mt-1 text-sm text-muted-foreground">{t.contactForm.successMessage}</p>
+        </div>
+
+        <!-- Form -->
+        <form id="contact-form" class="space-y-4" novalidate>
+
+          <!-- Business name -->
+          <input
+            type="text"
+            name="business"
+            id="cf-business"
+            required
+            placeholder={t.contactForm.businessNamePlaceholder}
+            class="contact-input"
+            autocomplete="organization"
+          />
+
+          <!-- Name + Phone -->
+          <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <input
+              type="text"
+              name="name"
+              id="cf-name"
+              required
+              placeholder={t.contactForm.namePlaceholder}
+              class="contact-input"
+              autocomplete="name"
+            />
+            <input
+              type="tel"
+              name="phone"
+              id="cf-phone"
+              required
+              placeholder={t.contactForm.phonePlaceholder}
+              class="contact-input"
+              autocomplete="tel"
+              dir="ltr"
+            />
+          </div>
+
+          <!-- Email -->
+          <input
+            type="email"
+            name="email"
+            id="cf-email"
+            required
+            placeholder={t.contactForm.emailPlaceholder}
+            class="contact-input"
+            autocomplete="email"
+            dir="ltr"
+          />
+
+          <!-- Gmail (for WhatsApp API / Meta Business) -->
+          <div>
+            <input
+              type="email"
+              name="gmail"
+              id="cf-gmail"
+              placeholder={t.contactForm.gmailPlaceholder}
+              class="contact-input"
+              dir="ltr"
+            />
+            <p class="cf-hint mt-1.5 flex items-center gap-1.5 text-xs text-muted-foreground">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-3.5 w-3.5 shrink-0 text-primary/70" aria-hidden="true">
+                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a.75.75 0 000 1.5h.253a.25.25 0 01.244.304l-.459 2.066A1.75 1.75 0 0010.747 15H11a.75.75 0 000-1.5h-.253a.25.25 0 01-.244-.304l.459-2.066A1.75 1.75 0 009.253 9H9z" clip-rule="evenodd" />
+              </svg>
+              {t.contactForm.gmailHint}
+            </p>
+          </div>
+
+          <!-- WhatsApp status -->
+          <div>
+            <label for="cf-whatsapp" class="cf-label mb-1.5 block text-xs font-semibold text-muted-foreground">
+              {t.contactForm.whatsappStatusLabel}
+            </label>
+            <div class="contact-select-wrap">
+              <select
+                name="whatsapp_status"
+                id="cf-whatsapp"
+                class="contact-input contact-input--select"
+              >
+                <option value="" disabled selected>{t.contactForm.whatsappStatusDefault}</option>
+                {t.contactForm.whatsappStatusOptions.map((opt) => (
+                  <option value={opt.value}>{opt.label}</option>
+                ))}
+              </select>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="contact-select-icon" aria-hidden="true">
+                <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+              </svg>
+            </div>
+          </div>
+
+          <!-- Message -->
+          <textarea
+            name="message"
+            id="cf-message"
+            rows="3"
+            placeholder={t.contactForm.messagePlaceholder}
+            class="contact-input contact-input--textarea"
+          ></textarea>
+
+          <button type="submit" class="btn-primary w-full justify-center">
+            {t.contactForm.submit}
+          </button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<script>
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+  const successEl = document.getElementById('contact-success');
+
+  if (form && successEl) {
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const business = (document.getElementById('cf-business') as HTMLInputElement).value.trim();
+      const name     = (document.getElementById('cf-name')     as HTMLInputElement).value.trim();
+      const phone    = (document.getElementById('cf-phone')    as HTMLInputElement).value.trim();
+      const email    = (document.getElementById('cf-email')    as HTMLInputElement).value.trim();
+      const gmail    = (document.getElementById('cf-gmail')    as HTMLInputElement).value.trim();
+      const whatsapp = (document.getElementById('cf-whatsapp') as HTMLSelectElement).value;
+      const message  = (document.getElementById('cf-message')  as HTMLTextAreaElement).value.trim();
+
+      const required = [['cf-business', business], ['cf-name', name], ['cf-phone', phone], ['cf-email', email]] as [string, string][];
+      let valid = true;
+      required.forEach(([id, val]) => {
+        const el = document.getElementById(id) as HTMLElement | null;
+        if (el) el.classList.toggle('contact-input--error', !val);
+        if (!val) valid = false;
+      });
+      if (!valid) return;
+
+      const whatsappLabels: Record<string, string> = {
+        regular: 'WhatsApp רגיל',
+        business_app: 'WhatsApp Business (אפליקציה)',
+        api_verified: 'WhatsApp API מאומת (Meta)',
+        unsure: 'לא בטוח',
+      };
+
+      const lines = [
+        `שם העסק: ${business}`,
+        `שם: ${name}`,
+        `טלפון: ${phone}`,
+        `אימייל: ${email}`,
+        gmail    ? `Gmail: ${gmail}`                                                   : '',
+        whatsapp ? `WhatsApp: ${whatsappLabels[whatsapp] ?? whatsapp}`                 : '',
+        message  ? `\nהודעה:\n${message}`                                               : '',
+      ].filter(Boolean).join('\n');
+
+      const subject = encodeURIComponent(`פנייה חדשה מ-${business} (${name})`);
+      const body    = encodeURIComponent(lines);
+
+      window.location.href = `mailto:daylicrm@gmail.com?subject=${subject}&body=${body}`;
+
+      form.classList.add('hidden');
+      successEl.classList.remove('hidden');
+    });
+
+    form.querySelectorAll('.contact-input').forEach((el) => {
+      el.addEventListener('input', () => el.classList.remove('contact-input--error'));
+    });
+  }
+</script>
+
+<style>
+  .contact-input {
+    width: 100%;
+    border-radius: 0.75rem;
+    border: 1px solid var(--border);
+    background-color: var(--background);
+    padding: 0.625rem 0.875rem;
+    font-size: 0.875rem;
+    color: var(--foreground);
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    font-family: inherit;
+    appearance: none;
+  }
+
+  .contact-input::placeholder {
+    color: var(--muted-foreground);
+  }
+
+  .contact-input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 20%, transparent);
+  }
+
+  .contact-input--textarea {
+    resize: vertical;
+    min-height: 5rem;
+  }
+
+  .contact-input--select {
+    cursor: pointer;
+    padding-inline-end: 2.5rem;
+  }
+
+  .contact-select-wrap {
+    position: relative;
+  }
+
+  .contact-select-icon {
+    pointer-events: none;
+    position: absolute;
+    inset-inline-end: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1rem;
+    height: 1rem;
+    color: var(--muted-foreground);
+  }
+
+  .contact-input--error {
+    border-color: #ef4444;
+    box-shadow: 0 0 0 3px rgb(239 68 68 / 0.15);
+  }
+
+  .contact-success {
+    text-align: center;
+    padding: 2rem 0;
+  }
+
+  .contact-success__icon {
+    display: flex;
+    justify-content: center;
+  }
+
+  .contact-panel {
+    background-color: color-mix(in srgb, var(--card) 80%, transparent);
+  }
+
+  .cf-hint {
+    line-height: 1.4;
+  }
+</style>

@@ -1,0 +1,123 @@
+@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: oklch(99.5% 0.003 240);
+  --foreground: oklch(18% 0.05 265);
+  --ink: oklch(13% 0.06 265);
+  --surface: oklch(98.5% 0.008 240);
+  --card: oklch(100% 0 0);
+  --card-foreground: oklch(18% 0.05 265);
+  --primary: oklch(55% 0.24 265);
+  --primary-foreground: oklch(99% 0 0);
+  --primary-glow: oklch(72% 0.18 245);
+  --brand-solid: oklch(55% 0.24 265);
+  --muted: oklch(96.5% 0.012 250);
+  --muted-foreground: oklch(50% 0.03 260);
+  --accent: oklch(94% 0.04 250);
+  --accent-foreground: oklch(20% 0.05 265);
+  --border: oklch(92% 0.012 250);
+  --radius: 0.75rem;
+  --gradient-hero: radial-gradient(ellipse 80% 60% at 50% 0%, oklch(72% 0.18 245 / 0.18), transparent 60%),
+    radial-gradient(ellipse 60% 50% at 80% 20%, oklch(55% 0.24 265 / 0.12), transparent 60%);
+  --gradient-brand: linear-gradient(135deg, oklch(55% 0.24 265), oklch(72% 0.18 245));
+  --gradient-text: linear-gradient(135deg, oklch(35% 0.18 265), oklch(55% 0.22 250) 50%, oklch(72% 0.18 240));
+  --shadow-brand: 0 20px 50px -20px oklch(55% 0.24 265 / 0.45);
+  --shadow-card: 0 1px 2px oklch(20% 0.05 265 / 0.04), 0 12px 32px -16px oklch(20% 0.05 265 / 0.12);
+  --shadow-glow: 0 0 0 1px oklch(55% 0.24 265 / 0.1), 0 30px 60px -30px oklch(55% 0.24 265 / 0.5);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Heebo', 'IBM Plex Sans Arabic', system-ui, sans-serif;
+    font-size: 16px;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  }
+
+  ::selection {
+    background: oklch(55% 0.24 265 / 0.2);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  .bg-hero {
+    background-image: var(--gradient-hero);
+  }
+
+  .grid-bg {
+    background-image: linear-gradient(90deg, oklch(55% 0.24 265 / 0.06) 1px, transparent 1px),
+      linear-gradient(oklch(55% 0.24 265 / 0.06) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+
+  .bg-brand {
+    background-image: var(--gradient-brand);
+  }
+
+  .text-gradient {
+    background-image: var(--gradient-text);
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+
+  .btn-primary {
+    @apply inline-flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-full bg-brand px-6 text-base font-semibold text-primary-foreground shadow-brand transition-all duration-200 hover:shadow-glow focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary;
+  }
+
+  .btn-secondary {
+    @apply inline-flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-full border border-border px-5 text-base font-semibold text-foreground backdrop-blur transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary;
+    background-color: color-mix(in oklab, var(--card) 70%, transparent);
+  }
+
+  .btn-secondary:hover {
+    background-color: var(--card);
+  }
+
+  .btn-ghost {
+    @apply inline-flex h-9 cursor-pointer items-center px-3 text-sm font-medium transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary;
+    color: color-mix(in oklab, var(--foreground) 80%, transparent);
+  }
+
+  .btn-ghost:hover {
+    color: var(--foreground);
+  }
+
+  .btn-nav {
+    @apply inline-flex h-8 shrink-0 cursor-pointer items-center rounded-full bg-foreground px-3 text-xs font-medium text-background transition-opacity duration-200 hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:h-9 sm:px-4 sm:text-sm;
+  }
+
+  .section-container {
+    @apply mx-auto max-w-7xl px-5 sm:px-8;
+  }
+
+  .section-title {
+    @apply font-display text-3xl font-extrabold tracking-tight text-ink sm:text-4xl;
+  }
+
+  .section-subtitle {
+    @apply mt-4 max-w-2xl text-lg leading-relaxed text-muted-foreground;
+  }
+}

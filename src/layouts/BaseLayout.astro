@@ -1,0 +1,76 @@
+---
+import '../styles/global.css';
+import type { Locale } from '../i18n/ui';
+import { getDir, getMessages } from '../i18n/ui';
+
+interface Props {
+  locale: Locale;
+  canonicalPath: string;
+}
+
+const { locale, canonicalPath } = Astro.props;
+const t = getMessages(locale);
+const dir = getDir(locale);
+const site = Astro.site?.origin ?? 'https://dayli.co.il';
+const canonical = new URL(canonicalPath, site).href;
+
+const alternatePaths = {
+  he: '/',
+  ar: '/ar/',
+  en: '/en/',
+};
+---
+
+<!doctype html>
+<html lang={locale} dir={dir}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={t.meta.description} />
+    <link rel="icon" type="image/png" href="/dayli-logo.png" />
+    <link rel="canonical" href={canonical} />
+    {
+      Object.entries(alternatePaths).map(([lang, path]) => (
+        <link rel="alternate" hreflang={lang} href={new URL(path, site).href} />
+      ))
+    }
+    <link rel="alternate" hreflang="x-default" href={new URL('/', site).href} />
+    <title>{t.meta.title}</title>
+    <script type="application/ld+json" set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'SoftwareApplication',
+      name: 'Dayli',
+      applicationCategory: 'BusinessApplication',
+      operatingSystem: 'Web',
+      offers: {
+        '@type': 'AggregateOffer',
+        priceCurrency: 'ILS',
+        lowPrice: '99',
+        highPrice: '449',
+      },
+    })} />
+  </head>
+  <body>
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:absolute focus:start-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:shadow-card"
+    >
+      Skip to content
+    </a>
+    <slot />
+  </body>
+</html>
+
+<style is:global>
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+</style>

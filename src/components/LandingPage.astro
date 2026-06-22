@@ -1,0 +1,30 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import FeaturesShowcase from '../components/FeaturesShowcase.astro';
+import Features from '../components/Features.astro';
+import Pricing from '../components/Pricing.astro';
+import FinalCTA from '../components/FinalCTA.astro';
+import Footer from '../components/Footer.astro';
+import type { Locale } from '../i18n/ui';
+
+interface Props {
+  locale: Locale;
+  canonicalPath: string;
+}
+
+const { locale, canonicalPath } = Astro.props;
+---
+
+<BaseLayout locale={locale} canonicalPath={canonicalPath}>
+  <Header locale={locale} />
+  <main id="main">
+    <Hero locale={locale} />
+    <FeaturesShowcase locale={locale} />
+    <Features locale={locale} />
+    <Pricing locale={locale} />
+    <FinalCTA locale={locale} />
+  </main>
+  <Footer locale={locale} />
+</BaseLayout>

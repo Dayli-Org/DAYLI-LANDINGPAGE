@@ -1,0 +1,31 @@
+---
+import type { Locale } from '../i18n/ui';
+import { getMessages } from '../i18n/ui';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = getMessages(locale);
+---
+
+<section class="border-y border-primary/10 bg-white py-16 md:py-20">
+  <div class="section-container">
+    <h2 class="section-title">{t.problem.title}</h2>
+    <ul class="mt-10 grid gap-4 sm:grid-cols-2">
+      {
+        t.problem.items.map((item) => (
+          <li class="flex gap-3 rounded-xl border border-primary/10 bg-surface p-5">
+            <span class="mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/15 text-primary" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4">
+                <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-1.72 6.97a.75.75 0 1 0-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 1 0 1.06 1.06L12 13.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L13.06 12l1.72-1.72a.75.75 0 1 0-1.06-1.06L12 10.94l-1.72-1.72Z" clip-rule="evenodd" />
+              </svg>
+            </span>
+            <span class="text-ink/85">{item}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
