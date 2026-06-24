@@ -21,10 +21,7 @@ const t = getMessages(locale);
         height="32"
         class="footer__logo"
       />
-      <p class="footer__tagline">
-        <span class="footer__brand-name">Dayli</span>
-        {t.footer.tagline}
-      </p>
+      <p class="footer__tagline">{t.footer.tagline}</p>
     </div>
 
     <div class="footer__contact">
@@ -72,11 +69,6 @@ const t = getMessages(locale);
     color: var(--muted-foreground);
     margin: 0;
     white-space: nowrap;
-  }
-
-  .footer__brand-name {
-    font-weight: 600;
-    color: var(--foreground);
   }
 
   .footer__contact {
