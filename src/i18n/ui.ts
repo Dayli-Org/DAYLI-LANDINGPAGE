@@ -27,19 +27,6 @@ export function getLocalePath(locale: Locale): string {
   return `${base}${locale}/`;
 }
 
-export interface PricingTier {
-  id: 'basic' | 'standard' | 'premium';
-  name: string;
-  price: string;
-  annualPrice: string;
-  period: string;
-  description: string;
-  features: string[];
-  highlighted?: boolean;
-  badge?: string;
-  cta: string;
-}
-
 export interface FeatureItem {
   title: string;
   description: string;
@@ -57,7 +44,6 @@ export interface Messages {
   };
   nav: {
     features: string;
-    pricing: string;
     contact: string;
     login: string;
     cta: string;
@@ -165,19 +151,6 @@ export interface Messages {
         received: string[];
       };
   };
-  pricing: {
-    eyebrow: string;
-    title: string;
-    subtitle: string;
-    perMonth: string;
-    billing: {
-      monthly: string;
-      annual: string;
-      save: string;
-      savePerYear: string;
-    };
-    tiers: PricingTier[];
-  };
   cta: {
     title: string;
     subtitle: string;
@@ -221,7 +194,6 @@ export const messages: Record<Locale, Messages> = {
     },
     nav: {
       features: 'תכונות',
-      pricing: 'מחירים',
       contact: 'צור קשר',
       login: 'כניסה',
       cta: 'התחל עכשיו',
@@ -369,82 +341,6 @@ export const messages: Record<Locale, Messages> = {
         ]
       }
     },
-    pricing: {
-      eyebrow: 'תמחור',
-      title: 'בחר את החבילה שמתאימה לך',
-      subtitle: 'מחירים שקופים. ללא הפתעות. בטל בכל רגע.',
-      perMonth: 'חודש',
-      billing: {
-        monthly: 'חודשי',
-        annual: 'שנתי',
-        save: 'חסכון 21%',
-        savePerYear: 'חסכת {amount} בשנה',
-      },
-      tiers: [
-        {
-          id: 'basic',
-          name: 'Basic',
-          price: '₪99',
-          annualPrice: '₪78',
-          period: 'חודש',
-          description: 'לעסק עצמאי',
-          cta: 'התחל עכשיו',
-          features: [
-            'ניהול יומן ותורים',
-            'דוחות וסטטיסטיקות בסיסיים',
-            'תזכורות תורים ב-WhatsApp',
-            'תבנית הודעת תזכורת קבועה',
-            'גישה מלאה מהנייד',
-            'משתמש אחד · יומן אחד',
-            'עד 150 הודעות תזכורת בחודש',
-            'תמיכה במייל',
-          ],
-        },
-        {
-          id: 'standard',
-          name: 'Standard',
-          price: '₪249',
-          annualPrice: '₪197',
-          period: 'חודש',
-          description: 'לעסק צומח עם צוות',
-          highlighted: true,
-          badge: 'הכי פופולרי',
-          cta: 'התחל עכשיו',
-          features: [
-            'כל מה שב-Basic, ובנוסף:',
-            'חיבור WhatsApp מתקדם',
-            'תבניות הודעות מותאמות אישית',
-            'תזכורות ומעקבים אוטומטיים',
-            'מאגר לקוחות (CRM)',
-            'יצירת מסמכים והפקת PDF',
-            'עד 3 תבניות מסמכים · 100 PDF/חודש',
-            'עד 3 משתמשים · 2 יומנים',
-            'תמיכה בעדיפות גבוהה',
-          ],
-        },
-        {
-          id: 'premium',
-          name: 'Premium',
-          price: '₪449',
-          annualPrice: '₪355',
-          period: 'חודש',
-          description: 'לעסק שרוצה אוטומציה ו-AI',
-          cta: 'שדרג ל-Premium',
-          features: [
-            'כל מה שב-Standard, ובנוסף:',
-            'סוכן AI למענה אוטומטי 24/7',
-            'סינון וניהול לידים אוטומטי',
-            'מעקב אוטומטי אחר לקוחות ולידים',
-            'מענה מיידי לפניות חדשות',
-            'תיאום פגישות אוטומטי',
-            'בסיס ידע מותאם אישית ל-AI',
-            'PDF ללא הגבלה · 5+ תבניות',
-            '4+ משתמשים · 3+ יומנים',
-            'תמיכה מועדפת 24/7',
-          ],
-        },
-      ],
-    },
     cta: {
       title: 'מוכן להחזיר לעצמך את היום?',
       subtitle: 'הצטרף לעסקים שכבר חוסכים שעות בשבוע עם Dayli.',
@@ -497,7 +393,6 @@ export const messages: Record<Locale, Messages> = {
     },
     nav: {
       features: 'الميزات',
-      pricing: 'الأسعار',
       contact: 'تواصل معنا',
       login: 'تسجيل الدخول',
       cta: 'ابدأ الآن',
@@ -645,82 +540,6 @@ export const messages: Record<Locale, Messages> = {
         ]
       }
     },
-    pricing: {
-      eyebrow: 'التسعير',
-      title: 'اختر الباقة المناسبة لك',
-      subtitle: 'أسعار شفافة. بدون مفاجآت. إلغاء في أي وقت.',
-      perMonth: 'شهر',
-      billing: {
-        monthly: 'شهري',
-        annual: 'سنوي',
-        save: 'وفّر 21%',
-        savePerYear: 'وفّرت {amount} سنوياً',
-      },
-      tiers: [
-        {
-          id: 'basic',
-          name: 'Basic',
-          price: '₪99',
-          annualPrice: '₪78',
-          period: 'شهر',
-          description: 'للعمل المستقل',
-          cta: 'ابدأ الآن',
-          features: [
-            'إدارة التقويم والمواعيد',
-            'تقارير وإحصائيات أساسية',
-            'تذكيرات مواعيد عبر WhatsApp',
-            'قالب رسالة تذكير ثابت',
-            'وصول كامل من الجوال',
-            'مستخدم واحد · تقويم واحد',
-            'حتى 150 رسالة تذكير شهرياً',
-            'دعم بالبريد',
-          ],
-        },
-        {
-          id: 'standard',
-          name: 'Standard',
-          price: '₪249',
-          annualPrice: '₪197',
-          period: 'شهر',
-          description: 'لعمل متنامٍ مع فريق',
-          highlighted: true,
-          badge: 'الأكثر شعبية',
-          cta: 'ابدأ الآن',
-          features: [
-            'كل ما في Basic، بالإضافة إلى:',
-            'تكامل WhatsApp متقدم',
-            'قوالب رسائل مخصصة',
-            'تذكيرات ومتابعات تلقائية',
-            'قاعدة عملاء (CRM)',
-            'إنشاء مستندات وتصدير PDF',
-            'حتى 3 قوالب · 100 PDF/شهر',
-            'حتى 3 مستخدمين · 2 تقاويم',
-            'دعم ذو أولوية',
-          ],
-        },
-        {
-          id: 'premium',
-          name: 'Premium',
-          price: '₪449',
-          annualPrice: '₪355',
-          period: 'شهر',
-          description: 'لعمل يريد الأتمتة والAI',
-          cta: 'ترقية إلى Premium',
-          features: [
-            'كل ما في Standard، بالإضافة إلى:',
-            'وكيل AI للرد التلقائي 24/7',
-            'تصفية وإدارة leads تلقائية',
-            'متابعة تلقائية للعملاء والleads',
-            'رد فوري على الاستفسارات الجديدة',
-            'جدولة مواعيد تلقائية',
-            'قاعدة معرفة مخصصة للAI',
-            'PDF بلا حدود · 5+ قوالب',
-            '4+ مستخدمين · 3+ تقاويم',
-            'دعم مفضل 24/7',
-          ],
-        },
-      ],
-    },
     cta: {
       title: 'مستعد لاستعادة يومك؟',
       subtitle: 'انضم للأعمال التي توفر ساعات أسبوعياً مع Dayli.',
@@ -773,7 +592,6 @@ export const messages: Record<Locale, Messages> = {
     },
     nav: {
       features: 'Features',
-      pricing: 'Pricing',
       contact: 'Contact',
       login: 'Log in',
       cta: 'Get started',
@@ -920,82 +738,6 @@ export const messages: Record<Locale, Messages> = {
           "Confirmed! Looking forward to it"
         ]
       }
-    },
-    pricing: {
-      eyebrow: 'Pricing',
-      title: 'Choose the plan that fits you',
-      subtitle: 'Transparent pricing. No surprises. Cancel anytime.',
-      perMonth: 'month',
-      billing: {
-        monthly: 'Monthly',
-        annual: 'Annual',
-        save: 'Save 21%',
-        savePerYear: 'You save {amount}/year',
-      },
-      tiers: [
-        {
-          id: 'basic',
-          name: 'Basic',
-          price: '₪99',
-          annualPrice: '₪78',
-          period: 'month',
-          description: 'For solo businesses',
-          cta: 'Get started',
-          features: [
-            'Calendar and appointment management',
-            'Basic reports and statistics',
-            'WhatsApp appointment reminders',
-            'Fixed reminder message template',
-            'Full mobile access',
-            '1 user · 1 calendar',
-            'Up to 150 reminder messages/month',
-            'Email support',
-          ],
-        },
-        {
-          id: 'standard',
-          name: 'Standard',
-          price: '₪249',
-          annualPrice: '₪197',
-          period: 'month',
-          description: 'For growing teams',
-          highlighted: true,
-          badge: 'Most popular',
-          cta: 'Get started',
-          features: [
-            'Everything in Basic, plus:',
-            'Advanced WhatsApp integration',
-            'Custom message templates',
-            'Automated reminders and follow-ups',
-            'Client database (CRM)',
-            'Document creation and PDF export',
-            'Up to 3 templates · 100 PDFs/month',
-            'Up to 3 users · 2 calendars',
-            'Priority support',
-          ],
-        },
-        {
-          id: 'premium',
-          name: 'Premium',
-          price: '₪449',
-          annualPrice: '₪355',
-          period: 'month',
-          description: 'For automation and AI',
-          cta: 'Upgrade to Premium',
-          features: [
-            'Everything in Standard, plus:',
-            '24/7 AI agent for auto-replies',
-            'Automated lead filtering and management',
-            'Automatic client and lead follow-up',
-            'Instant replies to new inquiries',
-            'Automated appointment scheduling',
-            'Custom AI knowledge base',
-            'Unlimited PDF · 5+ templates',
-            '4+ users · 3+ calendars',
-            'Priority 24/7 support',
-          ],
-        },
-      ],
     },
     cta: {
       title: 'Ready to reclaim your day?',
